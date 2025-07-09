@@ -1,24 +1,9 @@
 <?php
 
-/**
- * Core Framework - AuthCommand
- *
- * @license    MIT (https://mit-license.org/)
- * @author     Louis Ouellet <louis@laswitchtech.com>
- */
-
 // Import additionnal class into the global namespace
 use LaswitchTech\Core\Abstracts\Command;
 
 class AuthCommand extends Command {
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     /**
      * Change user password
