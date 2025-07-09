@@ -1,12 +1,5 @@
 <?php
 
-/**
- * Core Framework - AuthEndpoint
- *
- * @license    MIT (https://mit-license.org/)
- * @author     Louis Ouellet <louis@laswitchtech.com>
- */
-
 // Import additionnal class into the global namespace
 use \LaswitchTech\Core\Objects;
 use \LaswitchTech\Core\Abstracts\Endpoint;
@@ -31,126 +24,39 @@ class AuthEndpoint extends Endpoint {
 
         // Set Properties
         switch($namespace){
-            case "/auth/login":
-            case "/auth/members":
-            case "/auth/associates":
-            case "/auth/vcard":
+            case "/auth/users":
                 $this->Level = 1;
+                break;
+            case "/auth/setActive":
+            case "/auth/setInactive":
+                $this->Level = 3;
                 break;
         }
     }
 
     /**
-     * Retrieve Login Information
+     * Set the User as Active
      */
-    public function loginAction(): array
+    public function setActiveAction(): array
     {
-        // Set the default message
-        $message = ["status" => 200, "message" => "OK", "data" => [
-            "isAuthenticated" => $this->Auth->isAuthenticated(),
-            "isLoaded" => $this->Auth->isAuthenticated(),
-            "method" => $this->Auth->method(),
-        ]];
-
-        // Return the message
-        return $message;
+        return ["status" => 200, "message" => "OK", "data" => ["status" => $this->Model->Users->update($this->Auth->user()->id, ["isInactive" => 0])]];
     }
 
     /**
-     * Retrieve Object Members
+     * Set the User as Inactive
      */
-    public function membersAction(): array
+    public function setInactiveAction(): array
     {
-        // Retrieve the request parameters
-        $name = $this->Request->getParams('REQUEST','name');
-        $type = strtoupper($this->Request->getParams('REQUEST','type'));
-
-        // Set the default message
-        $message = ["status" => 200, "message" => "OK", "data" => []];
-
-        // Check if both parameters are set
-        if($type){
-
-            // Check if the type is valid
-            if(in_array($type,['ROLE','ROLES','GROUP','GROUPS'])){
-
-                // Check if a name is set
-                if($name){
-
-                    // Create the object
-                    switch($type){
-                        case 'ROLE':
-                        case 'ROLES':
-                            $object = new Objects\Role($name);
-                            break;
-                        case 'GROUP':
-                        case 'GROUPS':
-                            $object = new Objects\Group($name);
-                            break;
-                    }
-
-                    // Retrieve the members
-                    $members = $object->members('users');
-
-                    // Set the message
-                    $message["data"] = $members;
-                } else {
-                    $message = ["status" => 400, "message" => "Bad Request", "data" => []];
-                }
-            } else {
-                $message = ["status" => 400, "message" => "Bad Request", "data" => []];
-            }
-        } else {
-            $message = ["status" => 400, "message" => "Bad Request", "data" => []];
-        }
-
-        // Return the message
-        return $message;
+        return ["status" => 200, "message" => "OK", "data" => ["status" => $this->Model->Users->update($this->Auth->user()->id, ["isInactive" => 1])]];
     }
 
     /**
-     * Retrieve User's Associates
+     * Get the organization's users
      */
-    public function associatesAction(): array
+    public function usersAction(): array
     {
         // Set the default message
-        $message = ["status" => 200, "message" => "OK", "data" => []];
-
-        // Retrieve the user's associates
-        $associates = $this->Auth->user()->associates();
-
-        // Set the message
-        $message["data"] = $associates;
-
-        // Return the message
-        return $message;
-    }
-
-    /**
-     * Retrieve User's Colleagues
-     */
-    public function colleaguesAction(): array
-    {
-        // Set the default message
-        $message = ["status" => 200, "message" => "OK", "data" => []];
-
-        // Retrieve the user's colleagues
-        $colleagues = $this->Auth->user()->colleagues();
-
-        // Set the message
-        $message["data"] = $colleagues;
-
-        // Return the message
-        return $message;
-    }
-
-    /**
-     * Retrieve User's vCard
-     */
-    public function vcardAction(): array
-    {
-        // Set the default message
-        $message = ["status" => 200, "message" => "OK", "data" => $this->Auth->user()->vcard()];
+        $message = ["status" => 200, "message" => "OK", "data" => ["records" => $this->Model->Users->fetchAll([["key" => "organization", "operator" => "=", "value" => $this->Auth->user()->organization()->id]])]];
 
         // Return the message
         return $message;
