@@ -48,11 +48,11 @@ window.addEventListener('load', () => {
         // document.addEventListener('mousemove', resetInactivityTimer);
         document.addEventListener('keydown', resetInactivityTimer);
         document.addEventListener('click', resetInactivityTimer);
-        document.addEventListener('scroll', resetInactivityTimer);
+        // document.addEventListener('scroll', resetInactivityTimer);
         document.addEventListener('touchstart', resetInactivityTimer);
         // document.addEventListener('touchmove', resetInactivityTimer);
-        document.addEventListener('touchend', resetInactivityTimer);
-        window.addEventListener('beforeunload', resetInactivityTimer);
-        window.addEventListener('resize', resetInactivityTimer);
+        // document.addEventListener('touchend', resetInactivityTimer);
+        // window.addEventListener('beforeunload', resetInactivityTimer);
+        // window.addEventListener('resize', resetInactivityTimer);
     }
 });
