@@ -1,0 +1,15 @@
+[
+    {
+        "id": 9999,
+        "created": "2025-04-07 15:10:37",
+        "modified": "2025-04-07 15:10:37",
+        "owner": "demo",
+        "type": null,
+        "password": null,
+        "domain": null,
+        "server": null,
+        "port": null,
+        "ssl": null,
+        "organization": null
+    }
+]
