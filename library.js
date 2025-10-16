@@ -50,13 +50,13 @@ class ActivityMonitor {
         if(!USER_ID) return;
 
         // Set the user as active
-        API.endpoint('/auth/setActive').execute(function(response){
+        API.endpoint('/auth/setActive').suppress().execute(function(response){
             $('body').removeClass('animate-shake-once');
         });
 
         // Timer to Set the user as inactive
         this.#timer.inactive = setTimeout(() => {
-            API.endpoint('/auth/setInactive').execute(function(response){
+            API.endpoint('/auth/setInactive').suppress().execute(function(response){
                 $('body').addClass('animate-shake-once');
             });
         }, this.#timeout.inactive);
